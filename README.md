@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/inaka/offline_geocoder.svg?branch=master)](https://travis-ci.org/inaka/offline_geocoder)
+[![Coverage Status](https://coveralls.io/repos/github/inaka/offline_geocoder/badge.svg?branch=master)](https://coveralls.io/github/inaka/offline_geocoder?branch=master)
+
 # OfflineGeocoder
 
 A gem for offline reverse geocoding. It uses data from the [GeoNames](http://www.geonames.org/) project.
