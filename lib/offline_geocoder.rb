@@ -1,6 +1,6 @@
 require "offline_geocoder/version"
 require "csv"
-require "kdtree"
+require "geokdtree"
 
 class OfflineGeocoder
   def initialize
@@ -25,7 +25,7 @@ class OfflineGeocoder
         index += 1
       }
 
-      @@tree = Kdtree.new(@@points)
+      @@tree = Geokdtree::Tree.new(@@points)
       return nil
     end
   end
