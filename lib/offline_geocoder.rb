@@ -1,12 +1,12 @@
 require "offline_geocoder/version"
 require "csv"
-require "kdtree"
+require "geokdtree"
 
 class OfflineGeocoder
   def initialize
     unless defined? @@cities
       @@cities = []
-      @@points = []
+      @@tree = Geokdtree::Tree.new(2)
       index = 0
       csv_path = File.expand_path("../../og_cities1000.csv", __FILE__)
       lines = File.read(csv_path).split("\n")
@@ -21,17 +21,16 @@ class OfflineGeocoder
         parsed_line[0] = parsed_line[0].to_f
         parsed_line[1] = parsed_line[1].to_f
         @@cities << parsed_line
-        @@points << [parsed_line[0], parsed_line[1], index]
+        @@tree.insert([parsed_line[0], parsed_line[1]], index)
         index += 1
       }
 
-      @@tree = Kdtree.new(@@points)
       return nil
     end
   end
 
   def search(latitude, longitude)
-    record = @@cities[@@tree.nearest(latitude.to_f, longitude.to_f)]
+    record = @@cities[@@tree.nearest([latitude.to_f, longitude.to_f]).data.to_i]
     hash_record = {}
     record.each_with_index do |value, index|
       hash_record[@@fields[index]] = value
