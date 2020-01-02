@@ -6,7 +6,6 @@ class OfflineGeocoder
   def initialize
     unless defined? @@cities
       @@cities = []
-      @@textual = {}
       @@tree = Geokdtree::Tree.new(2)
       index = 0
       csv_path = File.expand_path("../../og_cities1000.csv", __FILE__)
@@ -21,9 +20,14 @@ class OfflineGeocoder
           end
         parsed_line[0] = parsed_line[0].to_f
         parsed_line[1] = parsed_line[1].to_f
-        @@cities << parsed_line
-        @@textual[parsed_line[2..-1].join(' ').downcase] = parsed_line
-        @@tree.insert([parsed_line[0], parsed_line[1]], index)
+
+        line_as_h = {}
+        parsed_line.each_with_index do |value, col|
+          line_as_h[@@fields[col]] = value
+        end
+
+        @@cities << line_as_h
+        @@tree.insert([line_as_h[:lat], line_as_h[:lon]], index)
         index += 1
       }
 
@@ -31,21 +35,14 @@ class OfflineGeocoder
     end
   end
 
-  def search(lat_or_name, lon = nil)
-    lat = lat_or_name.to_f
-    lon = lon.to_f if lon
-
-    if lat && lon
-      record = @@cities[@@tree.nearest([lat_or_name.to_f, lon.to_f]).data.to_i]
-    else
-      record = search_by_name(lat_or_name)
+  def search(query, lon = nil)
+    if query.is_a? Hash
+      search_by_attr(query)
+    elsif lon
+      lat = query.to_f
+      lon = lon.to_f
+      @@cities[@@tree.nearest([lat, lon]).data.to_i]
     end
-
-    hash_record = {}
-    record.each_with_index do |value, index|
-      hash_record[@@fields[index]] = value
-    end
-    hash_record
   end
 
   # Hide internal variables
@@ -55,9 +52,7 @@ class OfflineGeocoder
 
   private
 
-  ##
-  # Gets the "first" item where the searched name can be found in the names.
-  def search_by_name(name)
-    @@textual.select { |k,v| k.include?(name.downcase) }.first[1]
+  def search_by_attr(query = {})
+    @@cities.select { |object|  object >= query }.first
   end
 end
