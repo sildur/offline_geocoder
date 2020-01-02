@@ -63,6 +63,6 @@ class OfflineGeocoder
   end
 
   def search_by_attr(query = {})
-    @@cities.select { |object|  object >= query }.first
+    @@cities.select { |object| object >= query }.first
   end
 end
