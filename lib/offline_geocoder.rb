@@ -36,12 +36,18 @@ class OfflineGeocoder
   end
 
   def search(query, lon = nil)
-    if query.is_a? Hash
-      search_by_attr(query)
-    elsif lon
+    if lon
       lat = query.to_f
       lon = lon.to_f
-      @@cities[@@tree.nearest([lat, lon]).data.to_i]
+    elsif query.is_a? Hash
+      lat = query[:lat].to_f if query.include?(:lat)
+      lon = query[:lon].to_f if query.include?(:lon)
+    end
+
+    if lat && lon
+      search_by_latlon(lat, lon)
+    else
+      search_by_attr(query)
     end
   end
 
@@ -51,6 +57,10 @@ class OfflineGeocoder
   end
 
   private
+
+  def search_by_latlon(lat, lon)
+    @@cities[@@tree.nearest([lat, lon]).data.to_i]
+  end
 
   def search_by_attr(query = {})
     @@cities.select { |object|  object >= query }.first

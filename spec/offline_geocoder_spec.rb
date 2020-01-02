@@ -29,6 +29,11 @@ describe OfflineGeocoder do
     expect(result).to eq(bilbao_result)
   end
 
+  it 'accepts hash as a parameter' do
+    result = subject.search(lat: "43.26", lon: "-2.92")
+    expect(result).to eq(bilbao_result)
+  end
+
   it 'searches by name' do
     result = subject.search(name: "Bilbao")
     expect(result).to eq(bilbao_result)
