@@ -26,11 +26,8 @@ Or install it yourself as:
 
 ```ruby
 require "offline_geocoder"
-
 geocoder = OfflineGeocoder.new
-
 results = geocoder.search(51.5214588, -0.1729636)
-
 p results
 ```
 
@@ -40,6 +37,35 @@ The above code will output this:
 {:lat=>51.51116, :lon=>-0.18426, :name=>"Bayswater", :admin1=>"England", :admin2=>"Greater London", :cc=>"GB", :country=>"United Kingdom"}
 ```
 
+Alternatively, you can use named parameters when searching:
+
+```ruby
+results = geocoder.search(lat: 51.5214588, lon: -0.1729636)
+```
+
+### Searching for names or attributes
+
+You can search for names, countries and such. The first result will be
+returned.
+
+Searches are case sensitive and must match entirely. e.g. "York" will
+not find "New York", and "Cote dIvoire" will not match "Cote d'Ivoire".
+
+```ruby
+require "offline_geocoder"
+geocoder = OfflineGeocoder.new
+aus = geocoder.search(name: "Bayswater")
+p aus
+gb = geocoder.search(name: "Bayswater", country: "United Kingdom")
+p gb
+```
+
+The above code will output this:
+
+```ruby
+{:lat=>-37.85, :lon=>145.26667, :name=>"Bayswater", :admin1=>"Victoria", :admin2=>"Knox", :cc=>"AU", :country=>"Australia"}
+{:lat=>51.51116, :lon=>-0.18426, :name=>"Bayswater", :admin1=>"England", :admin2=>"Greater London", :cc=>"GB", :country=>"United Kingdom"}
+```
 
 ## Development
 
