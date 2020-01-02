@@ -36,16 +36,10 @@ class OfflineGeocoder
   end
 
   def search(query, lon = nil)
-    if lon
-      lat = query.to_f
-      lon = lon.to_f
-    elsif query.is_a? Hash
-      lat = query[:lat].to_f if query.include?(:lat)
-      lon = query[:lon].to_f if query.include?(:lon)
-    end
+    lat, lon = lon.nil? ? [query[:lat], query[:lon]] : [query, lon]
 
     if lat && lon
-      search_by_latlon(lat, lon)
+      search_by_latlon(lat.to_f, lon.to_f)
     else
       search_by_attr(query)
     end
