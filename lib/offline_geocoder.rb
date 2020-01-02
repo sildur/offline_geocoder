@@ -3,7 +3,7 @@ require "csv"
 require "geokdtree"
 
 class OfflineGeocoder
-  CSV_PATH = File.expand_path("../../og_cities1000.csv", __FILE__)
+  CSV_PATH = File.expand_path('../og_cities1000.csv', __dir__)
 
   def initialize
     unless defined? @@cities
