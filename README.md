@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/sildur/offline_geocoder.svg)](https://travis-ci.org/sildur/offline_geocoder) 
 [![Code Climate](https://codeclimate.com/github/sildur/offline_geocoder/badges/gpa.svg)](https://codeclimate.com/github/sildur/offline_geocoder)
-![Gem](https://img.shields.io/gem/v/offline_geocoder)
+[![Gem Version](https://badge.fury.io/rb/offline_geocoder.svg)](https://badge.fury.io/rb/offline_geocoder)
 ![Gem](https://img.shields.io/gem/dt/offline_geocoder)
 
 # OfflineGeocoder
