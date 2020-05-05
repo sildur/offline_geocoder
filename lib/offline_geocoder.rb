@@ -3,33 +3,22 @@ require "csv"
 require "geokdtree"
 
 class OfflineGeocoder
+  CSV_PATH = File.expand_path('../og_cities1000.csv', __dir__)
+
   def initialize
     unless defined? @@cities
       @@cities = []
       @@tree = Geokdtree::Tree.new(2)
+      @@table = []
       index = 0
-      csv_path = File.expand_path("../../og_cities1000.csv", __FILE__)
-      lines = File.read(csv_path).split("\n")
-      @@fields = lines[0].split(',').collect(&:to_sym)
-      lines[1..-1].each {|line|
-        parsed_line =
-          if line.include?('"')
-            CSV.parse(line)[0]
-          else
-            line.split(',')
-          end
-        parsed_line[0] = parsed_line[0].to_f
-        parsed_line[1] = parsed_line[1].to_f
-
-        line_as_h = {}
-        parsed_line.each_with_index do |value, col|
-          line_as_h[@@fields[col]] = value
-        end
-
-        @@cities << line_as_h
-        @@tree.insert([line_as_h[:lat], line_as_h[:lon]], index)
+      CSV.foreach(CSV_PATH, headers: true, header_converters: :symbol) do |row|
+        as_hash = row.to_h
+        as_hash[:lat] = as_hash[:lat].to_f
+        as_hash[:lon] = as_hash[:lon].to_f
+        @@tree.insert([row[:lat], row[:lon]], index)
+        @@table << as_hash
         index += 1
-      }
+      end
 
       return nil
     end
@@ -53,10 +42,10 @@ class OfflineGeocoder
   private
 
   def search_by_latlon(lat, lon)
-    @@cities[@@tree.nearest([lat, lon]).data.to_i]
+    @@table[@@tree.nearest([lat, lon]).data.to_i].to_h
   end
 
   def search_by_attr(query = {})
-    @@cities.select { |object| object >= query }.first
+    @@table.select { |object| object >= query }.first
   end
 end
