@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "offline_geocoder"
   spec.version       = OfflineGeocoder::VERSION
   spec.authors       = ["Roberto Romero"]
-  spec.email         = ["roberto@inaka.net"]
+  spec.email         = ["roberto.offline_geocoder@nirae.at"]
 
   spec.summary       = %q{Offline reverse geocoder}
   spec.description   = %q{Offline reverse geocoder. Uses GeoNames database}
