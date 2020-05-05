@@ -1,5 +1,0 @@
-Style/ClassVars:
-  Description: 'Avoid the use of class variables.'
-  StyleGuide: '#no-class-vars'
-  Enabled: false
-  VersionAdded: '0.13'
