@@ -7,6 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "offline_geocoder"
   spec.version       = OfflineGeocoder::VERSION
   spec.authors       = ["Roberto Romero"]
+  spec.date          = Time.now.utc.strftime("%Y-%m-%d")
   spec.email         = ["roberto.offline_geocoder@nirae.at"]
 
   spec.summary       = %q{Offline reverse geocoder}
@@ -14,9 +15,13 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/sildur/offline_geocoder"
   spec.license       = "Apache-2.0"
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.metadata = {
+    "bug_tracker_uri"   => "https://github.com/sildur/offline_geocoder/issues",
+    "homepage_uri"      => "https://github.com/sildur/offline_geocoder",
+    "source_code_uri"   => "https://github.com/sildur/offline_geocoder",
+  }
+
+  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(spec/|\.+)}) }
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 2.0"
