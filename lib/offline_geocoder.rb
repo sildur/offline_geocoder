@@ -1,26 +1,26 @@
-require "offline_geocoder/version"
-require "csv"
-require "geokdtree"
+# frozen_string_literal: true
+
+require 'offline_geocoder/version'
+require 'csv'
+require 'geokdtree'
 
 class OfflineGeocoder
   CSV_PATH = File.expand_path('../og_cities1000.csv', __dir__)
 
   def initialize
-    unless defined? @@cities
-      @@cities = []
-      @@tree = Geokdtree::Tree.new(2)
-      @@table = []
-      index = 0
-      CSV.foreach(CSV_PATH, headers: true, header_converters: :symbol) do |row|
-        as_hash = row.to_h
-        as_hash[:lat] = as_hash[:lat].to_f
-        as_hash[:lon] = as_hash[:lon].to_f
-        @@tree.insert([row[:lat], row[:lon]], index)
-        @@table << as_hash
-        index += 1
-      end
+    return if defined? @@cities
 
-      return nil
+    @@cities = []
+    @@tree = Geokdtree::Tree.new(2)
+    @@table = []
+    index = 0
+    CSV.foreach(CSV_PATH, headers: true, header_converters: :symbol) do |row|
+      as_hash = row.to_h
+      as_hash[:lat] = as_hash[:lat].to_f
+      as_hash[:lon] = as_hash[:lon].to_f
+      @@tree.insert([row[:lat], row[:lon]], index)
+      @@table << as_hash
+      index += 1
     end
   end
 
@@ -36,7 +36,7 @@ class OfflineGeocoder
 
   # Hide internal variables
   def inspect
-    "#<#{self.class}:0x#{'%014x' % (self.object_id << 1)}>"
+    "#<#{self.class}:0x#{format('%<id>014x', id: (object_id << 1))}>"
   end
 
   private
