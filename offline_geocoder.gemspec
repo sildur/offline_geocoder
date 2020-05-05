@@ -16,18 +16,17 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/sildur/offline_geocoder'
   spec.license       = 'Apache-2.0'
 
-  spec.metadata = {
-    'bug_tracker_uri' => 'https://github.com/sildur/offline_geocoder/issues',
-    'homepage_uri' => 'https://github.com/sildur/offline_geocoder',
-    'source_code_uri' => 'https://github.com/sildur/offline_geocoder'
-  }
-
   spec.files         =
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(spec/|\.+)}) }
   spec.bindir        = 'bin'
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
-
+  spec.required_ruby_version = '~> 2.0'
+  spec.metadata = {
+    'bug_tracker_uri' => 'https://github.com/sildur/offline_geocoder/issues',
+    'homepage_uri' => 'https://github.com/sildur/offline_geocoder',
+    'source_code_uri' => 'https://github.com/sildur/offline_geocoder'
+  }
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 12.3.3'
   spec.add_development_dependency 'rspec', '~> 3.2'
