@@ -20,8 +20,14 @@ class OfflineGeocoder
           end
         parsed_line[0] = parsed_line[0].to_f
         parsed_line[1] = parsed_line[1].to_f
-        @@cities << parsed_line
-        @@tree.insert([parsed_line[0], parsed_line[1]], index)
+
+        line_as_h = {}
+        parsed_line.each_with_index do |value, col|
+          line_as_h[@@fields[col]] = value
+        end
+
+        @@cities << line_as_h
+        @@tree.insert([line_as_h[:lat], line_as_h[:lon]], index)
         index += 1
       }
 
@@ -29,17 +35,28 @@ class OfflineGeocoder
     end
   end
 
-  def search(latitude, longitude)
-    record = @@cities[@@tree.nearest([latitude.to_f, longitude.to_f]).data.to_i]
-    hash_record = {}
-    record.each_with_index do |value, index|
-      hash_record[@@fields[index]] = value
+  def search(query, lon = nil)
+    lat, lon = lon.nil? ? [query[:lat], query[:lon]] : [query, lon]
+
+    if lat && lon
+      search_by_latlon(lat.to_f, lon.to_f)
+    else
+      search_by_attr(query)
     end
-    hash_record
   end
 
   # Hide internal variables
   def inspect
     "#<#{self.class}:0x#{'%014x' % (self.object_id << 1)}>"
+  end
+
+  private
+
+  def search_by_latlon(lat, lon)
+    @@cities[@@tree.nearest([lat, lon]).data.to_i]
+  end
+
+  def search_by_attr(query = {})
+    @@cities.select { |object| object >= query }.first
   end
 end
