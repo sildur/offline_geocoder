@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Offline reverse geocoder}
   spec.description   = %q{Offline reverse geocoder. Uses GeoNames database}
-  spec.homepage      = "https://github.com/inaka/offline_geocoder"
+  spec.homepage      = "https://github.com/sildur/offline_geocoder"
   spec.license       = "Apache-2.0"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
